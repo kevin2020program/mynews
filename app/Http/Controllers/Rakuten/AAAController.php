@@ -7,5 +7,8 @@ use Illuminate\Http\Request;
 
 class AAAController extends Controller
 {
-    //
+    public function add()
+    {
+      return view('rakuten.aaa.create');
+    }
 }
