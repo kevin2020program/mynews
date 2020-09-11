@@ -12,5 +12,5 @@ Route::group(['prefix' => 'admin'], function() {
     Route::get('profile/edit', 'Admin\ProfileController@edit');
 });
 
-Route::get('XXX', 'Rakuten\AAAController@bbb');
+Route::get('XXX', 'AAAController@bbb');
 
