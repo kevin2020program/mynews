@@ -27,16 +27,51 @@ class ProfileController extends Controller
         
         return redirect('admin/profile/create');
     }
-    
-    
-    public function edit()
+
+    public function index(Request $request)
     {
-        return view('admin.profile.edit');
+      $cond_name = $request->cond_name;
+      if ($cond_name != '') {
+          $posts = Profiles::where('title', $cond_name)->get();
+      } else {
+          $posts = Profiles::all();
+      }
+      return view('admin.profile.index', ['posts' => $posts, 'cond_name' => $cond_name]);
     }
     
-    public function update()
+    public function edit(Request $request)
     {
-        return redirect('admin/profile/edit');
+        // Profiles Modelからデータを取得する
+        $profiles = Profiles::find($request->id);
+        if (empty($profiles)) {
+        abort(404);    
+        }
+        return view('admin.profile.edit', ['profiles_form' => $profiles]);
+    }
+    
+    public function update(Request $request)
+    {
+        // Validationをかける
+        $this->validate($request, Profiles::$rules);
+        // Profiles Modelからデータを取得する
+        $profiles = Profiles::find($request->id);
+        // 送信されてきたフォームデータを格納する
+        $profiles_form = $request->all();
+        unset($profiles_form['_token']);
+
+        // 該当するデータを上書きして保存する
+        $profiles->fill($profiles_form)->save();
+
+        return redirect('admin/profile');
+    }
+
+    public function delete(Request $request)
+    {
+        // 該当するProfiles Modelを取得
+        $profiles = Profiles::find($request->id);
+        // 削除する
+        $profiles->delete();
+        return redirect('admin/profile');
     }
 }
     
