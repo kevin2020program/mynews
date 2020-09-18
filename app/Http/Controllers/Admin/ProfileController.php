@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 
 // 以下を追記することでProfiles Modelが扱えるようになる
 use App\Profiles;
-use App\PHistory;
+use App\Profile_history;
 use Carbon\Carbon;
 
 class ProfileController extends Controller
@@ -67,7 +67,7 @@ class ProfileController extends Controller
         $profiles->fill($profiles_form)->save();
 
         // 以下を追記
-        $phistory = new PHistory;
+        $phistory = new Profile_history;
         $phistory->profiles_id = $profiles->id;
         $phistory->edited_at = Carbon::now();
         $phistory->save();

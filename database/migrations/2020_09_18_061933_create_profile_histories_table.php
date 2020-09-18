@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePhistoriesTable extends Migration
+class CreatePrpfile_historiesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreatePhistoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('phistories', function (Blueprint $table) {
+        Schema::create('profile_histories', function (Blueprint $table) {
             $table->id();
             $table->integer('profiles_id');
             $table->string('edited_at');
-            
+
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ class CreatePhistoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('phistories');
+        Schema::dropIfExists('profile_histories');
     }
 }
