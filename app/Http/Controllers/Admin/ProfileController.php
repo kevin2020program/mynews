@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 
 // 以下を追記することでProfiles Modelが扱えるようになる
 use App\Profiles;
+use App\PHistory;
+use Carbon\Carbon;
 
 class ProfileController extends Controller
 {
@@ -20,7 +22,9 @@ class ProfileController extends Controller
         $this->validate($request, Profiles::$rules);
         $profiles = new Profiles;
         $form = $request->all();
-
+        
+        unset($profiles_form['_token']);
+        
         // データベースに保存する
         $profiles->fill($form);
         $profiles->save();
@@ -32,7 +36,7 @@ class ProfileController extends Controller
     {
       $cond_name = $request->cond_name;
       if ($cond_name != '') {
-          $posts = Profiles::where('title', $cond_name)->get();
+          $posts = Profiles::where('name', $cond_name)->get();
       } else {
           $posts = Profiles::all();
       }
@@ -61,6 +65,12 @@ class ProfileController extends Controller
 
         // 該当するデータを上書きして保存する
         $profiles->fill($profiles_form)->save();
+
+        // 以下を追記
+        $phistory = new PHistory;
+        $phistory->profiles_id = $profiles->id;
+        $phistory->edited_at = Carbon::now();
+        $phistory->save();
 
         return redirect('admin/profile');
     }
